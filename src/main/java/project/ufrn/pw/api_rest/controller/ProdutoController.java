@@ -52,7 +52,7 @@ public class ProdutoController {
                     p.setPreco(produto.getPreco());
                     p.setDescricao(produto.getDescricao());
                     return repository.save(p);
-                }).orElseGet(Produto::new);
+                }).orElseThrow();
     }
     
     @DeleteMapping("{id}")
