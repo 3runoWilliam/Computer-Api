@@ -10,4 +10,8 @@ public class PedidoService extends GenericService<Pedido, PedidoRepository>{
     public PedidoService(PedidoRepository repository){
         super(repository);
     }
+
+    public Pedido update(Pedido c){
+        return repository.saveAndFlush(c);
+    }
 }

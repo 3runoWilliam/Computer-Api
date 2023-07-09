@@ -2,6 +2,7 @@ package project.ufrn.pw.api_rest.controller;
 
 import org.springframework.web.bind.annotation.*;
 import project.ufrn.pw.api_rest.domain.Endereco;
+import project.ufrn.pw.api_rest.repository.EnderecoRepository;
 import project.ufrn.pw.api_rest.service.EnderecoService;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -15,12 +16,14 @@ import java.util.List;
 @RequestMapping("/Endereco")
 public class EnderecoController {
 
+    EnderecoRepository repository;
     EnderecoService service;
     ModelMapper mapper;
 
-    public EnderecoController(EnderecoService service, ModelMapper mapper) {
+    public EnderecoController(EnderecoService service, ModelMapper mapper, EnderecoRepository repository) {
         this.service = service;
         this.mapper = mapper;
+        this.repository = repository;
     }
 
     @PostMapping
@@ -54,8 +57,13 @@ public class EnderecoController {
     }
 
     @PutMapping("{id}")
-    public Endereco update(@RequestBody Endereco e, @PathVariable Long id) {
-        return this.service.update(e, id);
+    public Endereco update(@PathVariable("id") Long id, @RequestBody Endereco endereco) {
+        return repository.findById(id)
+                .map(e -> {
+                    e.setRua(endereco.getRua());
+
+                    return repository.save(e);
+                }).orElseGet(Endereco::new);
     }
 
     @DeleteMapping("{id}")

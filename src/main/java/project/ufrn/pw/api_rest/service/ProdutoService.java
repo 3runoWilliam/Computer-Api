@@ -11,7 +11,4 @@ public class ProdutoService extends GenericService<Produto, ProdutoRepository>{
         super(repository);
     }
 
-    public Produto saveAndFlush(Produto p, Long id) {
-        return null;
-    }
 }

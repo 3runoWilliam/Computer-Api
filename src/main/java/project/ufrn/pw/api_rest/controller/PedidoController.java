@@ -3,6 +3,7 @@ package project.ufrn.pw.api_rest.controller;
 import org.springframework.web.bind.annotation.*;
 import project.ufrn.pw.api_rest.domain.Pedido;
 import project.ufrn.pw.api_rest.domain.Pedido.DtoResponse;
+import project.ufrn.pw.api_rest.repository.PedidoRepository;
 import project.ufrn.pw.api_rest.service.PedidoService;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -14,11 +15,13 @@ import java.util.List;
 public class PedidoController {
 
     PedidoService service;
+    PedidoRepository repository;
     ModelMapper mapper;
 
-    public PedidoController(PedidoService service, ModelMapper mapper) {
+    public PedidoController(PedidoService service, ModelMapper mapper, PedidoRepository repository) {
         this.service = service;
         this.mapper = mapper;
+        this.repository = repository;
     }
 
     @PostMapping
@@ -52,14 +55,17 @@ public class PedidoController {
     }
 
     @PutMapping("{id}")
-    public Pedido update(@RequestBody Pedido p, @PathVariable Long id) {
-        return this.service.update(p, id);
+    public Pedido update(@PathVariable("id") Long id, @RequestBody Pedido pedido) {
+        return repository.findById(id)
+                .map(p -> {
+                    p.setFormaPagamento(pedido.getFormaPagamento());
+                    p.setValor(pedido.getValor());
+                    return repository.save(p);
+                }).orElseGet(Pedido::new);
     }
-
+    
     @DeleteMapping("{id}")
     public void delete(@PathVariable Long id) {
         this.service.delete(id);
     }
-
-    // tem tds
 }

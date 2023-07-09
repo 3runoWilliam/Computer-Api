@@ -2,6 +2,7 @@ package project.ufrn.pw.api_rest.controller;
 
 import org.springframework.web.bind.annotation.*;
 import project.ufrn.pw.api_rest.domain.Produto;
+import project.ufrn.pw.api_rest.repository.ProdutoRepository;
 import project.ufrn.pw.api_rest.service.ProdutoService;
 
 import java.util.List;
@@ -11,15 +12,17 @@ import org.springframework.http.HttpStatus;
 
 
 @RestController
-@RequestMapping("/Produtos")
+@RequestMapping("/Produto")
 public class ProdutoController {
 
+    ProdutoRepository repository;
     ProdutoService service;
     ModelMapper mapper;
 
-    public ProdutoController(ProdutoService service, ModelMapper mapper) {
+    public ProdutoController(ProdutoService service, ModelMapper mapper, ProdutoRepository repository) {
         this.service = service;
         this.mapper = mapper;
+        this.repository = repository;
     }
 
     @PostMapping
@@ -42,22 +45,25 @@ public class ProdutoController {
     }
     
     @PutMapping("{id}")
-    public Produto update(@RequestBody Produto p, @PathVariable Long id) {
-        return this.service.saveAndFlush(p, id);
+    public Produto update(@PathVariable("id") Long id, @RequestBody Produto produto) {
+        return repository.findById(id)
+                .map(p -> {
+                    p.setNome_produto(produto.getNome_produto());
+                    p.setPreco(produto.getPreco());
+                    p.setDescricao(produto.getDescricao());
+                    return repository.save(p);
+                }).orElseGet(Produto::new);
     }
-
     
     @DeleteMapping("{id}")
     public void delete(@PathVariable Long id) {
         this.service.delete(id);
     }
 
-     @GetMapping("{id}")
+    @GetMapping("{id}")
     public Produto.DtoResponse getById(@PathVariable Long id){
         Produto p = this.service.getById(id);
         Produto.DtoResponse res = Produto.DtoResponse.convertToDto(p, mapper);
         return res;
     }
-
-    //tem tds
 }
