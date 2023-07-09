@@ -70,6 +70,4 @@ public class Pedido extends AbstractEntity{
             return mapper.map(dto, Pedido.class);
         }
     }
-
-    
 }
