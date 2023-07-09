@@ -62,7 +62,7 @@ public class UsuarioController {
                     u.setLogin(usuario.getLogin());
                     u.setPassword(usuario.getPassword());
                     return repository.save(u);
-                }).orElseGet(Usuario::new);
+                }).orElseThrow();
     }
 
     @DeleteMapping("{id}")
