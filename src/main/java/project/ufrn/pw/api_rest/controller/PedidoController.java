@@ -61,7 +61,7 @@ public class PedidoController {
                     p.setFormaPagamento(pedido.getFormaPagamento());
                     p.setValor(pedido.getValor());
                     return repository.save(p);
-                }).orElseGet(Pedido::new);
+                }).orElseThrow();
     }
     
     @DeleteMapping("{id}")
