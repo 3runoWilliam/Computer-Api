@@ -4,15 +4,15 @@ import org.springframework.web.bind.annotation.*;
 import project.ufrn.pw.api_rest.domain.Produto;
 import project.ufrn.pw.api_rest.repository.ProdutoRepository;
 import project.ufrn.pw.api_rest.service.ProdutoService;
-
 import java.util.List;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 
 
 @RestController
 @RequestMapping("/Produto")
+@CrossOrigin
+// @CrossOrigin(origins = "http://localhost:5173", exposedHeaders = "X-Total-Count")
 public class ProdutoController {
 
     ProdutoRepository repository;
@@ -48,11 +48,17 @@ public class ProdutoController {
     public Produto update(@PathVariable("id") Long id, @RequestBody Produto produto) {
         return repository.findById(id)
                 .map(p -> {
+                    if (produto.getNome_produto() != null) {
                     p.setNome_produto(produto.getNome_produto());
+                    }
+                    if (produto.getPreco() != null) {
                     p.setPreco(produto.getPreco());
+                    }
+                    if (produto.getDescricao() != null) {
                     p.setDescricao(produto.getDescricao());
+                    }
                     return repository.save(p);
-                }).orElseGet(Produto::new);
+                }).orElseThrow();
     }
     
     @DeleteMapping("{id}")

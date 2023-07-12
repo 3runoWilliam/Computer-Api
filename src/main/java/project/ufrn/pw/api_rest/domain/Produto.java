@@ -39,6 +39,9 @@ public class Produto extends AbstractEntity{
         }
     }
 
+    @Override
+    public void partialUpdate(AbstractEntity e) {}
+
     @Data
     @EqualsAndHashCode(callSuper = true)
     public static class DtoResponse extends RepresentationModel<DtoResponse>{

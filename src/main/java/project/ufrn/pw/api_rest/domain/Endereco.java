@@ -1,7 +1,6 @@
 package project.ufrn.pw.api_rest.domain;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import project.ufrn.pw.api_rest.controller.EnderecoController;
 import lombok.*;
 import jakarta.validation.constraints.NotBlank;
@@ -27,6 +26,8 @@ public class Endereco extends AbstractEntity {
             return mapper.map(dto, Endereco.class);
         }
     }
+
+    public void partialUpdate(AbstractEntity e) {}
 
     @Data
     @EqualsAndHashCode(callSuper = true)

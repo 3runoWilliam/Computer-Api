@@ -18,7 +18,16 @@ public class Usuario extends AbstractEntity {
     String username;
     String login;
     String password;
-    Boolean isAdmin;
+    Boolean isAdmin = false;
+
+    @Override
+    public void partialUpdate(AbstractEntity e) {
+        if (e instanceof Usuario usuario){
+            this.username = usuario.username;
+            this.login = usuario.login;
+            this.password = usuario.password;
+        }
+    }
 
     @Data
     public static class DtoRequest {
@@ -39,7 +48,6 @@ public class Usuario extends AbstractEntity {
     public static class DtoResponse extends RepresentationModel<DtoResponse> {
         String username;
         String login;
-        // String password;
         Boolean isAdmin;
 
         public static DtoResponse convertToDto(Usuario u, ModelMapper mapper){
@@ -51,9 +59,5 @@ public class Usuario extends AbstractEntity {
              add(linkTo(UsuarioController.class).withRel("usuários"));
              add(linkTo(UsuarioController.class).slash(id).withRel("delete"));
         }
-    }
-
-    public boolean isPresent() {
-        return false;
     }
 }

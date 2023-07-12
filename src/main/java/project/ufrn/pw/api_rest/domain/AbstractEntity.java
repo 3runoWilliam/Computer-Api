@@ -37,6 +37,8 @@ public abstract class AbstractEntity {
         AbstractEntity that = (AbstractEntity) o;
         return id != null && Objects.equals(id, that.id);
     }
+
+    public abstract void partialUpdate(AbstractEntity e);
     
     @Override
     public int hashCode() {

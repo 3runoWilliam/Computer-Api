@@ -1,4 +1,4 @@
-package project.ufrn.pw.api_rest.config;
+// package project.ufrn.pw.api_rest.config;
 
 // import org.springframework.boot.context.properties.ConfigurationProperties;
 

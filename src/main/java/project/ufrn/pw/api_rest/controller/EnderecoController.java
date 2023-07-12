@@ -7,11 +7,9 @@ import project.ufrn.pw.api_rest.service.EnderecoService;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 
-
 import java.util.List;
 
-
-
+@CrossOrigin
 @RestController
 @RequestMapping("/Endereco")
 public class EnderecoController {
@@ -60,15 +58,15 @@ public class EnderecoController {
     public Endereco update(@PathVariable("id") Long id, @RequestBody Endereco endereco) {
         return repository.findById(id)
                 .map(e -> {
+                    if (endereco.getRua() != null) {
                     e.setRua(endereco.getRua());
-
+                    }
                     return repository.save(e);
-                }).orElseGet(Endereco::new);
+                }).orElseThrow();
     }
 
     @DeleteMapping("{id}")
     public void delete(@PathVariable Long id) {
         this.service.delete(id);
     }
-    //tem tds
 }

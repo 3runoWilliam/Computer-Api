@@ -58,10 +58,14 @@ public class PedidoController {
     public Pedido update(@PathVariable("id") Long id, @RequestBody Pedido pedido) {
         return repository.findById(id)
                 .map(p -> {
+                    if (pedido.getFormaPagamento() != null) {
                     p.setFormaPagamento(pedido.getFormaPagamento());
+                    }
+                    if (pedido.getValor() != null) {
                     p.setValor(pedido.getValor());
+                    }
                     return repository.save(p);
-                }).orElseGet(Pedido::new);
+                }).orElseThrow();
     }
     
     @DeleteMapping("{id}")

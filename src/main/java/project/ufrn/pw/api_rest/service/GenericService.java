@@ -2,8 +2,11 @@ package project.ufrn.pw.api_rest.service;
 
 import jakarta.persistence.EntityNotFoundException;
 import project.ufrn.pw.api_rest.domain.AbstractEntity;
+import org.springframework.data.domain.Pageable;
 import project.ufrn.pw.api_rest.repository.IGenericRepository;
 import java.util.*;
+
+import org.springframework.data.domain.Page;
 
 public abstract class GenericService<E extends AbstractEntity, R extends IGenericRepository<E>> implements IGenericService<E>{
 
@@ -24,29 +27,19 @@ public abstract class GenericService<E extends AbstractEntity, R extends IGeneri
     }
     
     @Override
-    public E update(E e, Long id){
-        Optional<E> banco = repository.findById(id);
-        if(banco.isPresent()){
+    public E update(E updatedEntity, Long id) {
+
+        Optional<E> entity = repository.findById(id);
+        if (entity.isPresent()){
+
+            E e = entity.get();
+            e.partialUpdate(updatedEntity);
+
             return (E) this.repository.save(e);
         }else{
-            throw new EntityNotFoundException();
+            throw  new EntityNotFoundException();
         }
     }
-
-    // @Override
-    // public E update(E updatedEntity, Long id) {
-
-    //     Optional<E> entity = repository.findById(id);
-    //     if (entity.isPresent()){
-
-    //         E e = entity.get();
-    //         e.partialUpdate(updatedEntity);
-
-    //         return this.repository.save(e);
-    //     }else{
-    //         throw  new EntityNotFoundException();
-    //     }
-    // }
 
     @Override
     public List<E> list(){
@@ -61,5 +54,10 @@ public abstract class GenericService<E extends AbstractEntity, R extends IGeneri
         }else{
             throw new EntityNotFoundException();
         }
+    }
+
+    @Override
+    public Page<E> find(Pageable page) {
+        return (Page<E>) this.repository.findAll(page);
     }
 }

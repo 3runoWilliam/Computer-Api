@@ -12,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/Usuario")
+@CrossOrigin
 public class UsuarioController {
 
     UsuarioService service;
@@ -58,11 +59,17 @@ public class UsuarioController {
     public Usuario update(@PathVariable("id") Long id, @RequestBody Usuario usuario) {
         return repository.findById(id)
                 .map(u -> {
+                    if (usuario.getUsername() != null) {
                     u.setUsername(usuario.getUsername());
+                    }
+                    if (usuario.getLogin() != null) {
                     u.setLogin(usuario.getLogin());
+                    }
+                    if (usuario.getPassword() != null) {
                     u.setPassword(usuario.getPassword());
+                    }
                     return repository.save(u);
-                }).orElseGet(Usuario::new);
+                }).orElseThrow();
     }
 
     @DeleteMapping("{id}")

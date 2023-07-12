@@ -43,6 +43,8 @@ public class Pedido extends AbstractEntity{
     )
     ArrayList<Produto> products = new ArrayList<Produto>();
 
+    public void partialUpdate(AbstractEntity e) {}
+
     @Data
     @EqualsAndHashCode(callSuper = true)
     public static class DtoResponse extends RepresentationModel<DtoResponse>{
