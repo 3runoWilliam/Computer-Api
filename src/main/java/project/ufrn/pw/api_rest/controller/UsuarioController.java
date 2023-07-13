@@ -10,8 +10,22 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import java.util.List;
 
+/*
+    login token
+  "username": "bruno",
+  "password": "bruno123"
+*/
+
+/*
+    cadastrar usuario
+  "username": "bruno",
+  "login": "bruno",
+  "password": "password",
+  "isAdmin": true
+ */
+
 @RestController
-@RequestMapping("/Usuario")
+@RequestMapping("/usuario")
 @CrossOrigin
 public class UsuarioController {
 
@@ -29,7 +43,7 @@ public class UsuarioController {
     @ResponseStatus(HttpStatus.CREATED)
     public Usuario.DtoResponse create(@RequestBody Usuario.DtoRequest u) {
         Usuario usuario = this.service.create(Usuario.DtoRequest.convertToEntity(u, mapper));
-
+        this.service.createUsuario(usuario);
         Usuario.DtoResponse response = Usuario.DtoResponse.convertToDto(usuario, mapper);
         response.generateLinks(usuario.getId());
 

@@ -4,17 +4,27 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import project.ufrn.pw.api_rest.controller.UsuarioController;
+
+import org.hibernate.annotations.SQLDelete;
 import org.modelmapper.ModelMapper;
 import org.springframework.hateoas.RepresentationModel;
-
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.hibernate.annotations.Where;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+
+import java.util.Collection;
+import java.util.Collections;
 
 @Entity
 @EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class Usuario extends AbstractEntity {
+@SQLDelete(sql = "UPDATE usuario SET deleted_at = CURRENT_TIMESTAMP WHERE id=?")
+@Where(clause = "deleted_at is null")
+public class Usuario extends AbstractEntity implements UserDetails{
     String username;
     String login;
     String password;
@@ -27,6 +37,41 @@ public class Usuario extends AbstractEntity {
             this.login = usuario.login;
             this.password = usuario.password;
         }
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return login;
+    }
+    
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 
     @Data

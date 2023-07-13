@@ -11,7 +11,7 @@ import org.springframework.http.HttpStatus;
 import java.util.List;
 
 @RestController
-@RequestMapping("/Pedido")
+@RequestMapping("/pedido")
 public class PedidoController {
 
     PedidoService service;

@@ -10,9 +10,8 @@ import org.springframework.http.HttpStatus;
 
 
 @RestController
-@RequestMapping("/Produto")
+@RequestMapping("/produto")
 @CrossOrigin
-// @CrossOrigin(origins = "http://localhost:5173", exposedHeaders = "X-Total-Count")
 public class ProdutoController {
 
     ProdutoRepository repository;

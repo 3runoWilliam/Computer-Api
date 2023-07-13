@@ -1,5 +1,5 @@
-// package project.ufrn.pw.api_rest.config;
+package project.ufrn.pw.api_rest.config;
 
-// public record LoginDTO (String username, String password){
-
-// }
+public record LoginDTO (String login, String password){
+    
+}

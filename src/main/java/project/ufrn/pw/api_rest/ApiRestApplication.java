@@ -6,10 +6,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 
-// import project.ufrn.pw.api_rest.config.RsaKeyProperties;
+import project.ufrn.pw.api_rest.config.RsaKeyProperties;
 
 @SpringBootApplication
-// @EnableConfigurationProperties(RsaKeyProperties.class)
+@EnableConfigurationProperties(RsaKeyProperties.class)
 public class ApiRestApplication {
 
 	public static void main(String[] args) {
