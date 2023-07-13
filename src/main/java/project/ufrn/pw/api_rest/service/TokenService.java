@@ -26,7 +26,7 @@ public class TokenService {
         JwtClaimsSet claims = JwtClaimsSet.builder()
                 .issuer("Api_Rest")
                 .issuedAt(now)
-                .expiresAt(now.plus(3, ChronoUnit.HOURS))
+                .expiresAt(now.plus(30, ChronoUnit.HOURS))
                 .subject(authentication.getName())
                 .claim("scope", scope)
                 .build();

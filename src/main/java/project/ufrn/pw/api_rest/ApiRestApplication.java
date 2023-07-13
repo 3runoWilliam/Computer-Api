@@ -23,7 +23,7 @@ public class ApiRestApplication {
 }
 
 /*
-Usuario 1--N Pedido
+Usuario 1--N Pedido V
 Pedido  N--N Produto
-xxxxx   1--1 xxxxx
+Usuario   1--1 Endereço V
 */

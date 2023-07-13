@@ -13,7 +13,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.hibernate.annotations.Where;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-
 import java.util.Collection;
 import java.util.Collections;
 
@@ -28,7 +27,15 @@ public class Usuario extends AbstractEntity implements UserDetails{
     String username;
     String login;
     String password;
-    Boolean isAdmin = false;
+    Boolean isAdmin;
+
+    @OneToOne
+    @JoinColumn(name = "endereco_id")
+    Endereco meuEndereco;
+
+    // @ManyToOne
+    // @JoinColumn(name = "pedido_id")
+    // ArrayList<Pedido> meusPedidos;
 
     @Override
     public void partialUpdate(AbstractEntity e) {
@@ -44,9 +51,19 @@ public class Usuario extends AbstractEntity implements UserDetails{
         return password;
     }
 
+    // @Override
+    // public ArrayList<Pedido> getMeusPedidos(){
+    //     return meusPedidos;
+    // }
+
+    // @Override
+    // public Endereco getMeuEndereco(){
+    //     return meuEndereco;
+    // }
+
     @Override
     public String getUsername() {
-        return login;
+        return username;
     }
     
     @Override
@@ -82,6 +99,8 @@ public class Usuario extends AbstractEntity implements UserDetails{
         String login;
         @NotBlank(message = "Password com nome em branco")
         String password;
+
+        Long endereco_id;
 
         public static Usuario convertToEntity(DtoRequest dto, ModelMapper mapper) {
             return mapper.map(dto, Usuario.class);

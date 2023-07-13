@@ -40,7 +40,7 @@ public class Pedido extends AbstractEntity{
         inverseJoinColumns = {
             @JoinColumn(name = "produto_id")
         }
-    )
+    )   
     ArrayList<Produto> products = new ArrayList<Produto>();
 
     public void partialUpdate(AbstractEntity e) {}

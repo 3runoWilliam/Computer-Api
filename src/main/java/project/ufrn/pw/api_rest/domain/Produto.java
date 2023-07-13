@@ -25,6 +25,9 @@ public class Produto extends AbstractEntity{
     Float preco;
     String descricao;
 
+    // @ManyToMany(mappedBy = "pedidos")
+    // ArrayList<Pedido> pedidos;
+
     @Data
     public static class DtoRequest {
         @NotBlank(message = "Produto com nome em branco")
