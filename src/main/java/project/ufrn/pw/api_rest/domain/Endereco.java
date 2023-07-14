@@ -1,7 +1,6 @@
 package project.ufrn.pw.api_rest.domain;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import project.ufrn.pw.api_rest.controller.EnderecoController;
 import lombok.*;
 import jakarta.validation.constraints.NotBlank;
@@ -9,12 +8,17 @@ import org.modelmapper.ModelMapper;
 import org.springframework.hateoas.RepresentationModel;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+
 
 @EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Entity
+@SQLDelete(sql = "UPDATE endereco SET deleted_at = CURRENT_TIMESTAMP WHERE id=?")
+@Where(clause = "deleted_at is null")
 public class Endereco extends AbstractEntity {
     String rua;
 
@@ -27,6 +31,8 @@ public class Endereco extends AbstractEntity {
             return mapper.map(dto, Endereco.class);
         }
     }
+
+    public void partialUpdate(AbstractEntity e) {}
 
     @Data
     @EqualsAndHashCode(callSuper = true)

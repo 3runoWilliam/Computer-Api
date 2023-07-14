@@ -54,8 +54,8 @@
             <version>2.0.4</version>
         </dependency>
 
-        <!-- Spring Security-->
-        <!-- <dependency>
+        <!-- Spring Security -->
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
         </dependency>
@@ -64,7 +64,7 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
             <optional>true</optional>
-        </dependency> -->
+        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -109,5 +109,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>

@@ -10,5 +10,4 @@ public class ProdutoService extends GenericService<Produto, ProdutoRepository>{
     public ProdutoService(ProdutoRepository repository){
         super(repository);
     }
-
 }

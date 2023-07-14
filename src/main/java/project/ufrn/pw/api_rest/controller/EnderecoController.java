@@ -9,8 +9,9 @@ import org.springframework.http.HttpStatus;
 
 import java.util.List;
 
+@CrossOrigin
 @RestController
-@RequestMapping("/Endereco")
+@RequestMapping("/endereco")
 public class EnderecoController {
 
     EnderecoRepository repository;
@@ -57,8 +58,9 @@ public class EnderecoController {
     public Endereco update(@PathVariable("id") Long id, @RequestBody Endereco endereco) {
         return repository.findById(id)
                 .map(e -> {
+                    if (endereco.getRua() != null) {
                     e.setRua(endereco.getRua());
-
+                    }
                     return repository.save(e);
                 }).orElseThrow();
     }
