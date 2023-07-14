@@ -29,13 +29,9 @@ public class Usuario extends AbstractEntity implements UserDetails{
     String password;
     Boolean isAdmin;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "endereco_id")
     Endereco meuEndereco;
-
-    // @ManyToOne
-    // @JoinColumn(name = "pedido_id")
-    // ArrayList<Pedido> meusPedidos;
 
     @Override
     public void partialUpdate(AbstractEntity e) {
@@ -43,23 +39,13 @@ public class Usuario extends AbstractEntity implements UserDetails{
             this.username = usuario.username;
             this.login = usuario.login;
             this.password = usuario.password;
-        }
+        }  
     }
 
     @Override
     public String getPassword() {
         return password;
     }
-
-    // @Override
-    // public ArrayList<Pedido> getMeusPedidos(){
-    //     return meusPedidos;
-    // }
-
-    // @Override
-    // public Endereco getMeuEndereco(){
-    //     return meuEndereco;
-    // }
 
     @Override
     public String getUsername() {
@@ -99,7 +85,7 @@ public class Usuario extends AbstractEntity implements UserDetails{
         String login;
         @NotBlank(message = "Password com nome em branco")
         String password;
-
+        @NotBlank(message = "Endereço com nome em branco")
         Long endereco_id;
 
         public static Usuario convertToEntity(DtoRequest dto, ModelMapper mapper) {
@@ -113,7 +99,9 @@ public class Usuario extends AbstractEntity implements UserDetails{
         String username;
         String login;
         Boolean isAdmin;
+        Long endereco_id;
 
+        /* nao ta mostrando o id do endereco -- resolver dps*/        
         public static DtoResponse convertToDto(Usuario u, ModelMapper mapper){
             return mapper.map(u, DtoResponse.class);
         }

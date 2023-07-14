@@ -1,9 +1,12 @@
 package project.ufrn.pw.api_rest.controller;
 
 import org.springframework.web.bind.annotation.*;
+
 import project.ufrn.pw.api_rest.domain.Pedido;
 import project.ufrn.pw.api_rest.domain.Pedido.DtoResponse;
+import project.ufrn.pw.api_rest.domain.Usuario;
 import project.ufrn.pw.api_rest.repository.PedidoRepository;
+import project.ufrn.pw.api_rest.repository.UsuarioRepository;
 import project.ufrn.pw.api_rest.service.PedidoService;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -14,23 +17,28 @@ import java.util.List;
 @RequestMapping("/pedido")
 public class PedidoController {
 
+    UsuarioRepository userRepository;
     PedidoService service;
     PedidoRepository repository;
     ModelMapper mapper;
 
-    public PedidoController(PedidoService service, ModelMapper mapper, PedidoRepository repository) {
+    public PedidoController(PedidoService service, ModelMapper mapper, PedidoRepository repository, UsuarioRepository userRepository) {
         this.service = service;
         this.mapper = mapper;
         this.repository = repository;
+        this.userRepository = userRepository;
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Pedido.DtoResponse create(@RequestBody Pedido.DtoRequest p) {
-        Pedido pedido = this.service.create(Pedido.DtoRequest.convertToEntity(p, mapper));
-
-        Pedido.DtoResponse res = Pedido.DtoResponse.convertToDto(pedido, mapper);
-        res.generateLinks(pedido.getId());
+        Pedido ped = Pedido.DtoRequest.convertToEntity(p, mapper);
+        Usuario user = userRepository.findById(p.getUsuario_id()).get();
+        ped.setUsuario(user);
+        service.create(ped);
+     
+        Pedido.DtoResponse res = Pedido.DtoResponse.convertToDto(ped, mapper);
+        res.generateLinks(ped.getId());
 
         return res;
     }
@@ -55,16 +63,19 @@ public class PedidoController {
     }
 
     @PutMapping("{id}")
-    public Pedido update(@PathVariable("id") Long id, @RequestBody Pedido pedido) {
+    public Pedido.DtoResponse update(@PathVariable("id") Long id, @RequestBody Pedido.DtoRequest pedido) {
         return repository.findById(id)
                 .map(p -> {
                     if (pedido.getFormaPagamento() != null) {
-                    p.setFormaPagamento(pedido.getFormaPagamento());
+                        p.setFormaPagamento(pedido.getFormaPagamento());
                     }
-                    if (pedido.getValor() != null) {
-                    p.setValor(pedido.getValor());
+                    if(pedido.getUsuario_id() != null){
+                        Usuario user = userRepository.findById(pedido.getUsuario_id()).get();
+                        p.setUsuario(user);
                     }
-                    return repository.save(p);
+                    repository.save(p);
+
+                    return Pedido.DtoResponse.convertToDto(p, mapper);
                 }).orElseThrow();
     }
     

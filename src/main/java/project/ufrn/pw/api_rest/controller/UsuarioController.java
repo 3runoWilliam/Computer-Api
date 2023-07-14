@@ -46,14 +46,13 @@ public class UsuarioController {
     @ResponseStatus(HttpStatus.CREATED)
     public Usuario.DtoResponse create(@RequestBody Usuario.DtoRequest u) {
         Endereco end = endRespository.findById(u.getEndereco_id()).get();
+        Usuario user = Usuario.DtoRequest.convertToEntity(u, mapper);
+        user.setMeuEndereco(end);
+        service.createUsuario(user);
+        Usuario.DtoResponse uFromUser = Usuario.DtoResponse.convertToDto(user, mapper);
+        uFromUser.generateLinks(user.getId());
 
-        Usuario usuario = this.service.create(Usuario.DtoRequest.convertToEntity(u, mapper));
-        usuario.setMeuEndereco(end);
-        this.service.createUsuario(usuario);
-        Usuario.DtoResponse response = Usuario.DtoResponse.convertToDto(usuario, mapper);
-        response.generateLinks(usuario.getId());
-
-        return response;
+        return uFromUser;
     }
 
     @GetMapping
@@ -80,23 +79,21 @@ public class UsuarioController {
         return repository.findById(id)
                 .map(u -> {
                     if (usuario.getUsername() != null) {
-                    u.setUsername(usuario.getUsername());
+                        u.setUsername(usuario.getUsername());
                     }
                     if (usuario.getLogin() != null) {
-                    u.setLogin(usuario.getLogin());
+                        u.setLogin(usuario.getLogin());
                     }
                     if (usuario.getPassword() != null) {
-                    u.setPassword(usuario.getPassword());
+                        u.setPassword(usuario.getPassword());
                     }
-                    if (usuario.getPassword() != null) {
-                    u.setPassword(usuario.getPassword());
+                    if (usuario.getEndereco_id() != null) {
+                        Endereco novoEnd = endRespository.findById(usuario.getEndereco_id()).get();
+                        u.setMeuEndereco(novoEnd);
                     }
                     repository.save(u);
 
                     return Usuario.DtoResponse.convertToDto(u, mapper);
-                    // Usuario.DtoRequest user = Usuario.DtoResponse.convertToDto(u,mapper);
-                    // Usuario user2 = user2.
-                    // return (Usuario.DtoResponse) repository.save(u);
                 }).orElseThrow();
     }
 

@@ -1,16 +1,16 @@
 package project.ufrn.pw.api_rest.domain;
 
-import java.util.ArrayList;
+import java.util.*;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 import org.modelmapper.ModelMapper;
 
 import project.ufrn.pw.api_rest.controller.PedidoController;
@@ -27,11 +27,17 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
+@SQLDelete(sql = "UPDATE pedido SET deleted_at = CURRENT_TIMESTAMP WHERE id=?")
+@Where(clause = "deleted_at is null")
 public class Pedido extends AbstractEntity{
     String formaPagamento;
     Float valor;
+
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "usuario_id")
+    Usuario usuario;
     
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
         name = "pedidos_produtos",
         joinColumns = {
@@ -41,7 +47,7 @@ public class Pedido extends AbstractEntity{
             @JoinColumn(name = "produto_id")
         }
     )   
-    ArrayList<Produto> products = new ArrayList<Produto>();
+    List<Produto> products;
 
     public void partialUpdate(AbstractEntity e) {}
 
@@ -50,7 +56,9 @@ public class Pedido extends AbstractEntity{
     public static class DtoResponse extends RepresentationModel<DtoResponse>{
         String formaPagamento;
         Float valor;
+        Long usuario_id;
 
+        /* esta mostrando o user_id como null */
 
         public static DtoResponse convertToDto(Pedido p, ModelMapper mapper){
             return mapper.map(p, DtoResponse.class);
@@ -67,6 +75,8 @@ public class Pedido extends AbstractEntity{
     public static class DtoRequest{
         @NotBlank(message = "Sem forma de pagamento")
         String formaPagamento;
+        @NotBlank(message = "Insira um usuario")
+        Long usuario_id;
 
         public static Pedido convertToEntity(DtoRequest dto, ModelMapper mapper){ 
             return mapper.map(dto, Pedido.class);

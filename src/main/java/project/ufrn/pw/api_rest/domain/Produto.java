@@ -14,19 +14,21 @@ import org.springframework.hateoas.RepresentationModel;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@SQLDelete(sql = "UPDATE produto SET deleted_at = CURRENT_TIMESTAMP WHERE id=?")
+@Where(clause = "deleted_at is null")
 public class Produto extends AbstractEntity{
     String nome_produto;
     Float preco;
     String descricao;
-
-    // @ManyToMany(mappedBy = "pedidos")
-    // ArrayList<Pedido> pedidos;
 
     @Data
     public static class DtoRequest {

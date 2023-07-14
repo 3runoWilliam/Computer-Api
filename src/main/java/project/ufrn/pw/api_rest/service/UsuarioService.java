@@ -26,8 +26,4 @@ public class UsuarioService extends GenericService<Usuario, UsuarioRepository> i
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return repository.findByLogin(username);
     }
-
-    // public Endereco getMeuEndereco(){
-    //     return repository.
-    // }
 }
