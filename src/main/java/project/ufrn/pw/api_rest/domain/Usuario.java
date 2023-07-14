@@ -101,9 +101,10 @@ public class Usuario extends AbstractEntity implements UserDetails{
         Boolean isAdmin;
         Long endereco_id;
 
-        /* nao ta mostrando o id do endereco -- resolver dps*/        
         public static DtoResponse convertToDto(Usuario u, ModelMapper mapper){
-            return mapper.map(u, DtoResponse.class);
+            DtoResponse dto = mapper.map(u, DtoResponse.class);
+            dto.setEndereco_id(u.getMeuEndereco().getId());
+            return dto;
         }
 
         public void generateLinks(Long id){

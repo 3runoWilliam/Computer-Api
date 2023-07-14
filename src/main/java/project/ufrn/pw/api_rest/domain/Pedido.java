@@ -58,10 +58,10 @@ public class Pedido extends AbstractEntity{
         Float valor;
         Long usuario_id;
 
-        /* esta mostrando o user_id como null */
-
         public static DtoResponse convertToDto(Pedido p, ModelMapper mapper){
-            return mapper.map(p, DtoResponse.class);
+            DtoResponse dto = mapper.map(p, DtoResponse.class);
+            dto.setUsuario_id(p.getUsuario().getId());
+            return dto;
         }
 
         public void generateLinks(Long id){
