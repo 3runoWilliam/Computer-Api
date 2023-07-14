@@ -52,4 +52,8 @@ public class Usuario extends AbstractEntity {
              add(linkTo(UsuarioController.class).slash(id).withRel("delete"));
         }
     }
+
+    public boolean isPresent() {
+        return false;
+    }
 }

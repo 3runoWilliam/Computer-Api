@@ -22,7 +22,7 @@ public abstract class GenericService<E extends AbstractEntity, R extends IGeneri
     public void delete(Long id){
         repository.deleteById(id);
     }
-
+    
     @Override
     public E update(E e, Long id){
         Optional<E> banco = repository.findById(id);
@@ -32,6 +32,21 @@ public abstract class GenericService<E extends AbstractEntity, R extends IGeneri
             throw new EntityNotFoundException();
         }
     }
+
+    // @Override
+    // public E update(E updatedEntity, Long id) {
+
+    //     Optional<E> entity = repository.findById(id);
+    //     if (entity.isPresent()){
+
+    //         E e = entity.get();
+    //         e.partialUpdate(updatedEntity);
+
+    //         return this.repository.save(e);
+    //     }else{
+    //         throw  new EntityNotFoundException();
+    //     }
+    // }
 
     @Override
     public List<E> list(){
@@ -46,6 +61,5 @@ public abstract class GenericService<E extends AbstractEntity, R extends IGeneri
         }else{
             throw new EntityNotFoundException();
         }
-        // return (E) this.repository.findById(id);
     }
 }

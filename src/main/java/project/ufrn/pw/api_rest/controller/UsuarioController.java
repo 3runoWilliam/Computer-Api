@@ -1,12 +1,13 @@
 package project.ufrn.pw.api_rest.controller;
 
 import org.springframework.web.bind.annotation.*;
+
 import project.ufrn.pw.api_rest.domain.Usuario;
 import project.ufrn.pw.api_rest.domain.Usuario.DtoResponse;
+import project.ufrn.pw.api_rest.repository.UsuarioRepository;
 import project.ufrn.pw.api_rest.service.UsuarioService;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
-
 import java.util.List;
 
 @RestController
@@ -14,11 +15,13 @@ import java.util.List;
 public class UsuarioController {
 
     UsuarioService service;
+    UsuarioRepository repository;
     ModelMapper mapper;
 
-    public UsuarioController(UsuarioService service, ModelMapper mapper) {
+    public UsuarioController(UsuarioService service, ModelMapper mapper, UsuarioRepository repository) {
         this.service = service;
         this.mapper = mapper;
+        this.repository = repository;
     }
 
     @PostMapping
@@ -52,14 +55,18 @@ public class UsuarioController {
     }
 
     @PutMapping("{id}")
-    public Usuario update(@RequestBody Usuario p, @PathVariable Long id) {
-        return this.service.update(p, id);
+    public Usuario update(@PathVariable("id") Long id, @RequestBody Usuario usuario) {
+        return repository.findById(id)
+                .map(u -> {
+                    u.setUsername(usuario.getUsername());
+                    u.setLogin(usuario.getLogin());
+                    u.setPassword(usuario.getPassword());
+                    return repository.save(u);
+                }).orElseThrow();
     }
 
     @DeleteMapping("{id}")
     public void delete(@PathVariable Long id) {
         this.service.delete(id);
     }
-
-    //tem tds
 }
