@@ -49,7 +49,6 @@ public class Pedido extends AbstractEntity{
         String formaPagamento;
         Float valor;
 
-
         public static DtoResponse convertToDto(Pedido p, ModelMapper mapper){
             return mapper.map(p, DtoResponse.class);
         }
@@ -70,6 +69,4 @@ public class Pedido extends AbstractEntity{
             return mapper.map(dto, Pedido.class);
         }
     }
-
-    
 }
