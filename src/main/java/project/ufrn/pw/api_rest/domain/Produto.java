@@ -1,12 +1,7 @@
 package project.ufrn.pw.api_rest.domain;
 
 import org.modelmapper.ModelMapper;
-
-// import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
-// import jakarta.persistence.JoinColumn;
-// import jakarta.persistence.JoinTable;
-// import jakarta.persistence.ManyToMany;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,8 +10,6 @@ import lombok.NoArgsConstructor;
 import project.ufrn.pw.api_rest.controller.ProdutoController;
 import org.springframework.hateoas.RepresentationModel;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-
-// import java.util.List;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 

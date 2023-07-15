@@ -1,26 +1,19 @@
 package project.ufrn.pw.api_rest.domain;
 
 import java.util.*;
-
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.modelmapper.ModelMapper;
-
 import project.ufrn.pw.api_rest.controller.PedidoController;
 import project.ufrn.pw.api_rest.domain.Pedido;
 import org.springframework.hateoas.RepresentationModel;
-
-
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-
- 
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
@@ -68,7 +61,6 @@ public class Pedido extends AbstractEntity{
                 Long id = p.getProducts().get(i).getId();
                 dto.getProdutos().add(id);
             }
-
             return dto;
         }
 

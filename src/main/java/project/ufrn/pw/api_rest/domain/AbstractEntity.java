@@ -2,11 +2,9 @@ package project.ufrn.pw.api_rest.domain;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
-
 import org.hibernate.Hibernate;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;

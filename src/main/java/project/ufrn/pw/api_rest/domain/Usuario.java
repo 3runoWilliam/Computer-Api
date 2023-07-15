@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import project.ufrn.pw.api_rest.controller.UsuarioController;
-
 import org.hibernate.annotations.SQLDelete;
 import org.modelmapper.ModelMapper;
 import org.springframework.hateoas.RepresentationModel;
