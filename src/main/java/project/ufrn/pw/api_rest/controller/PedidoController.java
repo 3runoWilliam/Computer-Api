@@ -3,38 +3,48 @@ package project.ufrn.pw.api_rest.controller;
 import org.springframework.web.bind.annotation.*;
 
 import project.ufrn.pw.api_rest.domain.Pedido;
+import project.ufrn.pw.api_rest.domain.Produto;
 import project.ufrn.pw.api_rest.domain.Pedido.DtoResponse;
 import project.ufrn.pw.api_rest.domain.Usuario;
 import project.ufrn.pw.api_rest.repository.PedidoRepository;
+import project.ufrn.pw.api_rest.repository.ProdutoRepository;
 import project.ufrn.pw.api_rest.repository.UsuarioRepository;
 import project.ufrn.pw.api_rest.service.PedidoService;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @RequestMapping("/pedido")
 public class PedidoController {
-
+    ProdutoRepository prodRepository;
     UsuarioRepository userRepository;
     PedidoService service;
     PedidoRepository repository;
     ModelMapper mapper;
 
-    public PedidoController(PedidoService service, ModelMapper mapper, PedidoRepository repository, UsuarioRepository userRepository) {
+    public PedidoController(PedidoService service, ModelMapper mapper, PedidoRepository repository, UsuarioRepository userRepository, ProdutoRepository prodRepository) {
         this.service = service;
         this.mapper = mapper;
         this.repository = repository;
         this.userRepository = userRepository;
+        this.prodRepository = prodRepository;
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Pedido.DtoResponse create(@RequestBody Pedido.DtoRequest p) {
         Pedido ped = Pedido.DtoRequest.convertToEntity(p, mapper);
+        Produto prod = prodRepository.findById(p.getProduto_id()).get();
         Usuario user = userRepository.findById(p.getUsuario_id()).get();
+
+        ArrayList<Produto> lista = new ArrayList<>();
+        ped.setProducts(lista);
         ped.setUsuario(user);
+        ped.getProducts().add(prod);
         service.create(ped);
      
         Pedido.DtoResponse res = Pedido.DtoResponse.convertToDto(ped, mapper);
@@ -74,12 +84,16 @@ public class PedidoController {
                         Usuario user = userRepository.findById(pedido.getUsuario_id()).get();
                         p.setUsuario(user);
                     }
+                    if(pedido.getProduto_id() != null){
+                        Produto prod = prodRepository.findById(pedido.getProduto_id()).get();
+                        p.getProducts().add(prod);
+                    }
                     repository.save(p);
 
                     return Pedido.DtoResponse.convertToDto(p, mapper);
                 }).orElseThrow();
     }
-    
+
     @DeleteMapping("{id}")
     public void delete(@PathVariable Long id) {
         this.service.delete(id);

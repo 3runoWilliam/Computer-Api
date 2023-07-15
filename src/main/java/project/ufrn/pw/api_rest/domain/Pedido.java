@@ -27,17 +27,17 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-@SQLDelete(sql = "UPDATE pedido SET deleted_at = CURRENT_TIMESTAMP WHERE id=?")
+@SQLDelete(sql = "UPDATE produto SET deleted_at = CURRENT_TIMESTAMP WHERE id=?")
 @Where(clause = "deleted_at is null")
 public class Pedido extends AbstractEntity{
     String formaPagamento;
     Float valor;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     @JoinColumn(name = "usuario_id")
     Usuario usuario;
     
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(
         name = "pedidos_produtos",
         joinColumns = {
@@ -57,10 +57,18 @@ public class Pedido extends AbstractEntity{
         String formaPagamento;
         Float valor;
         Long usuario_id;
+        ArrayList<Long> produtos;
 
         public static DtoResponse convertToDto(Pedido p, ModelMapper mapper){
             DtoResponse dto = mapper.map(p, DtoResponse.class);
             dto.setUsuario_id(p.getUsuario().getId());
+            for(int i=0; i < p.getProducts().size(); i++){
+                ArrayList<Long> lista = new ArrayList<>();
+                dto.setProdutos(lista);
+                Long id = p.getProducts().get(i).getId();
+                dto.getProdutos().add(id);
+            }
+
             return dto;
         }
 
@@ -77,6 +85,8 @@ public class Pedido extends AbstractEntity{
         String formaPagamento;
         @NotBlank(message = "Insira um usuario")
         Long usuario_id;
+        @NotBlank(message = "insira um produto")
+        Long produto_id;
 
         public static Pedido convertToEntity(DtoRequest dto, ModelMapper mapper){ 
             return mapper.map(dto, Pedido.class);

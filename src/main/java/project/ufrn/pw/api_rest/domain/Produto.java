@@ -33,18 +33,6 @@ public class Produto extends AbstractEntity{
     Float preco;
     String descricao;
 
-    // @ManyToMany(cascade = CascadeType.ALL)
-    // @JoinTable(
-    //     name = "produtos_pedidos",
-    //     joinColumns = {
-    //         @JoinColumn(name = "peoduto_id", referencedColumnName = "id")
-    //     },
-    //     inverseJoinColumns = {
-    //         @JoinColumn(name = "pedido_id")
-    //     }
-    // )
-    // List<Pedido> pedidos;
-
     @Data
     public static class DtoRequest {
         @NotBlank(message = "Produto com nome em branco")
