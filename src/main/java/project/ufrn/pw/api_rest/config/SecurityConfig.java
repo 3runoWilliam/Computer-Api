@@ -63,6 +63,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests( auth -> {
                             auth.requestMatchers(AUTH_WHITELIST).permitAll();
                             auth.requestMatchers(HttpMethod.POST, "/usuario").permitAll();
+                            auth.requestMatchers(HttpMethod.POST, "/endereco").permitAll();
+                            auth.requestMatchers(HttpMethod.GET, "/endereco").permitAll();
                             auth.anyRequest().authenticated();
                         }
                 )
