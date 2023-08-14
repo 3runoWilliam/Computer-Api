@@ -35,19 +35,29 @@ A API de Venda de Computadores oferece as seguintes funcionalidades principais:
 Aqui estão alguns exemplos de como realizar requisições para a API utilizando o cURL:
 
 1. Listar Computadores:
-  curl http://localhost:8080/computadores
+  ```md
+  http://localhost:8080/computadores
+  ```
 
 2. Detalhes de um Computador:
-  curl http://localhost:8080/computadores
+  ```md
+  http://localhost:8080/computadores
+  ```
 
-3. Cadastrar Computador:
-  curl -X POST -H "Content-Type: application/json" -d '{"marca": "Dell", "modelo": "Inspiron 5000", "preco": 1200}' http://localhost:8080/computadores
+4. Cadastrar Computador:
+  ```md
+  -X POST -H "Content-Type: application/json" -d '{"marca": "Dell", "modelo": "Inspiron 5000", "preco": 1200}' http://localhost:8080/computadores
+  ```
 
-4. Atualizar Computador:
-  curl -X PUT -H "Content-Type: application/json" -d '{"preco": 1300}' http://localhost:8080/computadores/{id}
+5. Atualizar Computador:
+  ```md
+  -X PUT -H "Content-Type: application/json" -d '{"preco": 1300}' http://localhost:8080/computadores/{id}
+  ```
 
-5. Deletar Computador:
-  curl -X DELETE http://localhost:8080/computadores/{id}
+6. Deletar Computador:
+  ```md
+  -X DELETE http://localhost:8080/computadores/{id}
+  ```
 
 Certifique-se de substituir os valores de exemplo pelos dados reais que você deseja utilizar.
 
@@ -58,8 +68,6 @@ Contribuições são bem-vindas! Se você encontrar bugs, tiver sugestões ou qu
 ## Licença
 
 Este projeto está licenciado.
-
----
 
 Esperamos que esta API seja útil para a gestão eficiente das vendas de computadores. Sinta-se à vontade para personalizar e adaptar de acordo com suas necessidades específicas. Se tiver alguma dúvida, consulte a documentação ou entre em contato com a equipe de desenvolvimento.
 
