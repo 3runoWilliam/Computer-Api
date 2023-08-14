@@ -6,7 +6,6 @@ import project.ufrn.pw.api_rest.repository.EnderecoRepository;
 
 @Service
 public class EnderecoService extends GenericService<Endereco, EnderecoRepository> {
-    
     public EnderecoService(EnderecoRepository repository) {
         super(repository);
     }
