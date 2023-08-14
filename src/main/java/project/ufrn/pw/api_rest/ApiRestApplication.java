@@ -10,7 +10,6 @@ import project.ufrn.pw.api_rest.config.RsaKeyProperties;
 @SpringBootApplication
 @EnableConfigurationProperties(RsaKeyProperties.class)
 public class ApiRestApplication {
-
 	public static void main(String[] args) {
 		SpringApplication.run(ApiRestApplication.class, args);
 	}
