@@ -18,6 +18,7 @@ import lombok.Setter;
 @Setter
 @RequiredArgsConstructor
 public abstract class AbstractEntity {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
